@@ -111,8 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49a6ffd860864c6eb22bf912d53be5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoloringDuration: 4
-  _recoloringDetention: 4
+  _recoloringDuration: 1
+  _recoloringDetention: 1
 --- !u!54 &2122137231612320011
 Rigidbody:
   m_ObjectHideFlags: 0

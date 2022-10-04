@@ -10,7 +10,9 @@ public class RecoloringBehavior : MonoBehaviour
     private Color _nextColor;
     private Renderer _renderer;
 
-    private float _currentTime;
+    private float _currentTimeDuration;
+    private float _currentTimeDetention;
+    private bool _isWaitRecoloring = false;
 
     private void Awake()
     {
@@ -20,22 +22,30 @@ public class RecoloringBehavior : MonoBehaviour
 
     private void Update()
     {
-        _currentTime += Time.deltaTime;
+        if (_isWaitRecoloring)
+        {
+            _currentTimeDetention += Time.deltaTime;
 
-        var progress = _currentTime / _recoloringDuration;
+            if (_currentTimeDetention >= _recoloringDetention)
+            {
+                _currentTimeDetention = 0f;
+                GenerateNextColor();
+                _isWaitRecoloring = !_isWaitRecoloring;
+            }
+            return;
+        }
+        
+        _currentTimeDuration += Time.deltaTime;
+
+        var progress = _currentTimeDuration / _recoloringDuration;
         var currentColor = Color.Lerp(_startColor, _nextColor, progress);
         _renderer.material.color = currentColor;
 
-        if (_currentTime >= _recoloringDuration)
+        if (_currentTimeDuration >= _recoloringDuration)
         {
-            Invoke("DelayRecoloringTime", _recoloringDetention);
+            _currentTimeDuration = 0f;
+            _isWaitRecoloring = !_isWaitRecoloring;
         }
-    }
-
-    private void DelayRecoloringTime()
-    {
-        _currentTime = 0f;
-        GenerateNextColor();
     }
 
     private void GenerateNextColor()
